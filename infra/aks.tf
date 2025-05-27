@@ -4,7 +4,7 @@ provider "azurerm" {
 }
 
 resource "azurerm_resource_group" "rg" {
-  name     = "sujeetrg"
+  name     = "auto-rg"
   location = "East US"
 }
 
