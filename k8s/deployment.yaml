@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
         - name: webapp
-          image: <your-acr-name>.azurecr.io/myapp:v1
+          image: autosujeetgit.azurecr.io/myapp:v1
           ports:
             - containerPort: 80
