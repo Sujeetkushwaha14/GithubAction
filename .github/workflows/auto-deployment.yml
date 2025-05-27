@@ -1,0 +1,38 @@
+name: Infra + App Deploy
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Terraform Apply
+        run: |
+          cd infra
+          terraform init
+          terraform apply -auto-approve
+
+      - name: Get AKS Credentials
+        run: |
+          az aks get-credentials --resource-group auto-rg --name autodeployaks --overwrite-existing
+
+      - name: Build Docker Image
+        run: |
+          az acr login --name autodeployacr
+          docker build -t autodeployacr.azurecr.io/myapp:v1 .
+          docker push autodeployacr.azurecr.io/myapp:v1
+
+      - name: Deploy App to AKS
+        run: |
+          kubectl apply -f k8s/deployment.yaml
+          kubectl apply -f k8s/service.yaml
