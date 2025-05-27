@@ -36,7 +36,7 @@ jobs:
 
       - name: Get AKS Credentials
         run: |
-          az aks get-credentials --resource-group sujeetrg1 --name autosujeetgit --overwrite-existing
+          az aks get-credentials --resource-group sujeetrg1 --name autodsujeetgit --overwrite-existing
 
       - name: Build Docker Image and Push to ACR
         run: |
