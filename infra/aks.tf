@@ -3,12 +3,12 @@ provider "azurerm" {
 }
 
 resource "azurerm_resource_group" "rg" {
-  name     = "auto-rg"
+  name     = "sujeetrg"
   location = "East US"
 }
 
 resource "azurerm_container_registry" "acr" {
-  name                = "autodeployacr"
+  name                = "autosujeetgit"
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
   sku                 = "Basic"
@@ -16,7 +16,7 @@ resource "azurerm_container_registry" "acr" {
 }
 
 resource "azurerm_kubernetes_cluster" "aks" {
-  name                = "autodeployaks"
+  name                = "autodujeetgit"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
   dns_prefix          = "autodeploy"
