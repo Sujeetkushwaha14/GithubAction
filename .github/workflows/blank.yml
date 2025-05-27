@@ -7,6 +7,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -16,9 +17,20 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Terraform Apply
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.6.6
+
+      - name: Check Tools
         run: |
-          cd infra
+          terraform -version
+          kubectl version --client
+          docker version
+
+      - name: Terraform Apply
+        working-directory: infra
+        run: |
           terraform init
           terraform apply -auto-approve
 
@@ -26,7 +38,7 @@ jobs:
         run: |
           az aks get-credentials --resource-group auto-rg --name autodeployaks --overwrite-existing
 
-      - name: Build Docker Image
+      - name: Build Docker Image and Push to ACR
         run: |
           az acr login --name autodeployacr
           docker build -t autodeployacr.azurecr.io/myapp:v1 .
