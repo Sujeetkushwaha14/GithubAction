@@ -17,3 +17,4 @@ spec:
           image: autosujeetgit.azurecr.io/myapp:v1
           ports:
             - containerPort: 80
+            
